@@ -45,3 +45,4 @@ export function fetcher(url){
 }
 
 export default axiosService;
+export {BASE_API_URL};
