@@ -12,11 +12,10 @@ return (
         <p className="content">
         This is a new social media site that will allow you to share your
             thoughts and experiences with your amici. Register now and start
-            enjoring!{" "}
-            <br>
-            Or if you already have an account, please{" "}
+            enjoying!
+            <br/>
+            Or if you already have an account, please
             {<Link to="/login/">Login</Link>}
-            </br>
         </p>
         </div>
     </div>
