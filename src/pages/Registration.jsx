@@ -14,7 +14,7 @@ return (
             thoughts and experiences with your amici. Register now and start
             enjoying!
             <br/>
-            Or if you already have an account, please
+            Or if you already have an account, please &nbsp;
             {<Link to="/login/">Login</Link>}
         </p>
         </div>
