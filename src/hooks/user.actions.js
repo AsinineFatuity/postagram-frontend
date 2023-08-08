@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const BASE_API_URL = "http://localhost:8000/api"
+const BASE_URL = "http://localhost:8000"
+const BASE_API_URL = `${BASE_URL}/api`
+
 
 function useUserActions(){
     const navigate = useNavigate();
@@ -57,5 +59,5 @@ function getRefreshToken(){
     return auth.refresh;
 }
 
-export {getAccessToken,getRefreshToken, getUser, useUserActions, BASE_API_URL}
+export {getAccessToken,getRefreshToken, getUser, useUserActions, BASE_API_URL, BASE_URL}
 

@@ -1,10 +1,10 @@
 import axios from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
-import {getAccessToken, getRefreshToken, BASE_API_URL}  from "../../hooks/user.actions";
+import {getAccessToken, getRefreshToken, BASE_URL}  from "../../hooks/user.actions";
 
 
 const axiosService = axios.create({
-    baseURL:BASE_API_URL,
+    baseURL:BASE_URL,
     headers: {
         "Content-Type":"application/json",
     },
@@ -23,7 +23,7 @@ axiosService.interceptors.response.use(
 
 const refreshAuthLogic = async (failedRequest) =>{
     return axios.post("/refresh/token/",null,{
-        baseURL: BASE_API_URL,
+        baseURL: BASE_URL,
         headers: {
             Authorization:`Bearer ${getRefreshToken()}`,
         },
@@ -43,4 +43,3 @@ export function fetcher(url){
 }
 
 export default axiosService;
-export {BASE_API_URL};
