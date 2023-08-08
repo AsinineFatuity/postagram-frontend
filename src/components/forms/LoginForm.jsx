@@ -23,7 +23,9 @@ function LoginForm() {
         };
 
         userActions.login(data).catch((err) => {
-            setError(err.request.response);
+            if(err.message){
+                setError(err.request.response);
+            }
         })
     };
 
