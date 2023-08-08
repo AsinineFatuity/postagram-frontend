@@ -5,7 +5,6 @@ const BASE_API_URL = "http://localhost:8000/api"
 
 function useUserActions(){
     const navigate = useNavigate();
-  
     return {
         login,
         register,
