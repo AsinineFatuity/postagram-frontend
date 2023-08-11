@@ -16,14 +16,14 @@ function useUserActions(){
     function login(data){
         return axios.post(`${BASE_API_URL}/auth/login/`, data).then((res) => {
             //Register the acount and tokens in the store
-            setUserData(res)
+            setUserData(res.data)
             navigate("/")
         })
     }
 
     function register(data){
         return axios.post(`${BASE_API_URL}/auth/register/`, data).then((res) =>{
-            setUserData(res)
+            setUserData(res.data)
             navigate("/")
 
         })
@@ -34,30 +34,39 @@ function useUserActions(){
         navigate("/login/")
     }
 
-    function setUserData(res){
-        localStorage.setItem("auth", JSON.stringify({
-            access: res.data.access,
-            refresh: res.data.refresh,
-            user: res.data.user
-        }));
-    }
 }
 
-const auth = JSON.parse(localStorage.getItem("auth"))
 
 //get user
 function getUser(){
-    return auth.user;
+    const auth = JSON.parse(localStorage.getItem("auth"))
+    if (auth){
+        return auth.user
+    }else{
+        return null;
+    }
 }
 //get access token
 function getAccessToken(){
+    const auth = JSON.parse(localStorage.getItem("auth"))
     return auth.access;
 
 }
 //get refresh token
 function getRefreshToken(){
+    const auth = JSON.parse(localStorage.getItem("auth"))
     return auth.refresh;
 }
 
-export {getAccessToken,getRefreshToken, getUser, useUserActions, BASE_API_URL, BASE_URL}
+// Set the access, token and user property
+function setUserData(data){
+    localStorage.setItem("auth", JSON.stringify({
+        access: data.access,
+        refresh: data.refresh,
+        user: data.user
+    }));
+    console.log(JSON.parse(localStorage.getItem("auth")))
+}
+
+export {getAccessToken,getRefreshToken, getUser, useUserActions, setUserData, BASE_API_URL, BASE_URL}
 
