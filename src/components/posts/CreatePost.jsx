@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
+import Toaster from "../Toaster";
 import axiosService from "../../helpers/axios";
 import { getUser } from "../../hooks/user.actions";
 import { BASE_API_URL } from "../../hooks/user.actions";
@@ -10,6 +11,10 @@ function CreatePostForm() {
     const handleShow = () => setShow(true)
     const [validated, setValidated] = useState(false);
     const [form, setForm] = useState({})
+    const [showToast, setShowToast] = useState(false)
+    const [toastTitle, setToastTitle] = useState("")
+    const [toastMessage, setToastMessage] = useState("")
+    const [toastType, setToastType] = useState("")
     const user = getUser()
 
     const handleSubmit = (event) => {
@@ -25,8 +30,15 @@ function CreatePostForm() {
         axiosService.post(`${BASE_API_URL}/post`, data).then(
             ()=>{
                 handleClose()
+                setToastTitle("Success")
+                setToastMessage("Post created successfully")
+                setToastType("success")
                 setForm({})
+                setShowToast(true)
             }).catch((error)=>{
+                setToastTitle("Failed")
+                setToastMessage(`An error occured ${error}`)
+                setToastType("danger")
                 console.log(error)
             })
     }
@@ -65,6 +77,13 @@ function CreatePostForm() {
                 </Button>
             </Modal.Footer>
         </Modal>
+        <Toaster
+        title = {toastTitle.length ? toastTitle: "Post"}
+        message = {toastMessage}
+        showToast = {showToast}
+        type={toastType}
+        onClose = {()=> setShowToast(false)}
+        />
         </>
     )
 }
