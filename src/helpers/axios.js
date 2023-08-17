@@ -1,7 +1,6 @@
 import axios from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
-import {getAccessToken, getRefreshToken, getUser, BASE_API_URL}  from "../../hooks/user.actions";
-
+import { getAccessToken, getRefreshToken, getUser, BASE_API_URL } from '../hooks/user.actions';
 
 const axiosService = axios.create({
     baseURL:BASE_API_URL,

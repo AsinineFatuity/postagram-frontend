@@ -5,7 +5,7 @@ import axiosService from "../../helpers/axios";
 import { getUser } from "../../hooks/user.actions";
 import { BASE_API_URL } from "../../hooks/user.actions";
 
-function CreatePostForm() {
+function CreatePost() {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
@@ -19,7 +19,8 @@ function CreatePostForm() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (CreatePostForm.checkValidity() === false){
+        const createPostForm = event.currentTarget;
+        if (createPostForm.checkValidity() === false){
             event.stopPropagation()
         }
         setValidated(true)
@@ -87,4 +88,4 @@ function CreatePostForm() {
         </>
     )
 }
-export default CreatePostForm;
+export default CreatePost;
