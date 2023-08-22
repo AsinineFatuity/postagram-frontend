@@ -30,7 +30,7 @@ function useUserActions(){
     }
 
     function logout(){
-        localStorage.removeItem("auth");
+        removeUserData();
         navigate("/login/")
     }
 
