@@ -30,40 +30,48 @@ function useUserActions(){
     }
 
     function logout(){
+        return axios.post(`${BASE_API_URL}/auth/logout/`, {refresh: getRefreshToken()})
+        .then(() =>{
         removeUserData();
         navigate("/login/")
+        })
     }
 
 }
-
 
 //get user
 function getUser(){
-    return localStorage.getItem("user") || null
+    const auth = JSON.parse(localStorage.getItem("auth"))
+    if (auth){
+        return auth.user
+    }else{
+        return null;
     }
+}
 
 //get access token
 function getAccessToken(){
-    return localStorage.getItem("access") || null
-
+    const auth = JSON.parse(localStorage.getItem("auth"))
+    return auth.access;
 }
+
 //get refresh token
 function getRefreshToken(){
-    return localStorage.getItem("refresh") || null
+    const auth = JSON.parse(localStorage.getItem("auth"))
+    return auth.refresh;
 }
 
 // Set the access, token and user property
 function setUserData(data){
-    localStorage.setItem('access', data.access);
-    localStorage.setItem('refresh', data.refresh);
-    localStorage.setItem('user', data.user);
+    localStorage.setItem("auth", JSON.stringify({
+        access: data.access,
+        refresh: data.refresh,
+        user: data.user
+    }));
 }
 
 function removeUserData(){
-    const userDataKey = ["access", "user", "refresh"]
-    for(let key of userDataKey){
-        localStorage.removeItem(key)
-    }
+    localStorage.removeItem("auth")
 }
 
 export {getAccessToken,getRefreshToken, getUser, useUserActions, setUserData, removeUserData, BASE_API_URL, BASE_URL}
