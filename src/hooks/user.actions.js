@@ -39,34 +39,32 @@ function useUserActions(){
 
 //get user
 function getUser(){
-    const auth = JSON.parse(localStorage.getItem("auth"))
-    if (auth){
-        return auth.user
-    }else{
-        return null;
+    return localStorage.getItem("user") || null
     }
-}
+
 //get access token
 function getAccessToken(){
-    const auth = JSON.parse(localStorage.getItem("auth"))
-    return auth.access;
+    return localStorage.getItem("access") || null
 
 }
 //get refresh token
 function getRefreshToken(){
-    const auth = JSON.parse(localStorage.getItem("auth"))
-    return auth.refresh;
+    return localStorage.getItem("refresh") || null
 }
 
 // Set the access, token and user property
 function setUserData(data){
-    localStorage.setItem("auth", JSON.stringify({
-        access: data.access,
-        refresh: data.refresh,
-        user: data.user
-    }));
-    console.log(JSON.parse(localStorage.getItem("auth")))
+    localStorage.setItem('access', data.access);
+    localStorage.setItem('refresh', data.refresh);
+    localStorage.setItem('user', data.user);
 }
 
-export {getAccessToken,getRefreshToken, getUser, useUserActions, setUserData, BASE_API_URL, BASE_URL}
+function removeUserData(){
+    const userDataKey = ["access", "user", "refresh"]
+    for(let key of userDataKey){
+        localStorage.removeItem(key)
+    }
+}
+
+export {getAccessToken,getRefreshToken, getUser, useUserActions, setUserData, removeUserData, BASE_API_URL, BASE_URL}
 
