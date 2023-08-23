@@ -6,9 +6,13 @@ import { fetcher } from "../helpers/axios";
 import { getUser } from "../hooks/user.actions";
 import CreatePost from "../components/posts/CreatePost";
 import Layout from "../components/Layout";
+import Post from "../components/posts/Post";
 
 function Home(){
     const user = getUser()
+    const posts = useSWR("/post/", fetcher, {
+        refreshInterval: 10000
+    })
     if (!user){
         return <div>Loading...</div>
     }
@@ -29,6 +33,11 @@ function Home(){
                         <Col sm={10} className="flex-grow-1">
                             <CreatePost/>
                         </Col>
+                    </Row>
+                    <Row sm={10} className="flex-grow-1">
+                        {posts.data?.results.map((post, index) => (
+                            <Post key={index} post={post} refresh={posts.mutate}/>
+                        ))}
                     </Row>
                 </Col>
             </Row>
