@@ -28,7 +28,7 @@ function CreatePost() {
             author: user.id,
             body: form.body
         }
-        axiosService.post(`${BASE_API_URL}/post`, data).then(
+        axiosService.post(`${BASE_API_URL}/post/`, data).then(
             ()=>{
                 handleClose()
                 setToastTitle("Success")

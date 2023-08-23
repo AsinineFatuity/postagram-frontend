@@ -25,7 +25,7 @@ function NavigationBar(){
                         }
                         >
                             <NavDropdown.Item href="#">Profile</NavDropdown.Item>
-                            <NavDropdown.Item onClick={userActions.logout()}> Logout </NavDropdown.Item>
+                            <NavDropdown.Item onClick={userActions.logout}> Logout </NavDropdown.Item>
                             
                         </NavDropdown>
                     </Nav>
