@@ -1,12 +1,39 @@
 import React, { useState } from "react";
 import { format } from "timeago.js";
-import { LikeFilled, CommentOutlined, LikeOutlined } from "@ant-design/icons";
-import { Image, Card, Dropdown } from "react-bootstrap";
+import { LikeFilled, CommentOutlined, LikeOutlined, MoreOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { Image, Card, Dropdown, Button, Modal, Form } from "react-bootstrap";
 import { randomAvatar } from "../../utils";
+import Toaster from "../Toaster"
 import axiosService from "../../helpers/axios";
+import { getUser } from "../../hooks/user.actions";
 
+
+const MoreToggleIcon = React.forwardRef(({onClick}, ref) => (
+  <Link 
+  to="#"
+  ref = {ref}
+  onClick={ (e) =>{
+    e.preventDefault();
+    onClick(e)
+  }}
+  >
+    <MoreOutlined/>
+  </Link>
+))
 function Post(props) {
   const { post, refresh } = props;
+  const [showToast, setShowToast] = useState(false)
+  const user = getUser()
+
+  const handleDelete = () =>{
+    axiosService.delete(`/post/${post.id}/`)
+    .then(() => {
+      setShowToast(true)
+      refresh()
+    })
+    .catch( (error) => console.error(error))
+  }
 
   const handleLikeClick = (action) => {
     axiosService
@@ -22,6 +49,7 @@ function Post(props) {
       <Card className="rounded-3 my-4">
         <Card.Body>
           <Card.Title className="d-flex flex-row justify-content-between">
+            <div className="d-flex flex-row">
             <Image
               src={randomAvatar()}
               roundedCircle
@@ -30,11 +58,29 @@ function Post(props) {
               className="me-2 border border-primary border-2"
             />
             <div className="d-flex flex-column justify-content-start align-self-center mt-2">
-              <p className="fs-6 m-0">{post.author.name}</p>
+              <p className="fs-6 m-0">{post.author.username}</p>
               <p className="fs-6 fw-lighter">
                 <small>{format(post.created)}</small>
               </p>
             </div>
+            </div>
+
+            {user.id === post.author.id && (
+              <div>
+                <Dropdown>
+                  <Dropdown.Toggle as={MoreToggleIcon}></Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item>Update</Dropdown.Item>
+                    <Dropdown.Item onClick={handleDelete}
+                    className="text-danger"
+                    >
+                      Delete
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
+            )}
+
           </Card.Title>
           <Card.Text>{post.body}</Card.Text>
           <div className="d-flex flex-row">
@@ -91,6 +137,13 @@ function Post(props) {
           </div>
         </Card.Footer>
       </Card>
+      <Toaster
+      title="Post!"
+      message = "Post deleted"
+      type="danger"
+      showToast = {showToast}
+      onClose = { () => setShowToast(false)}
+      />
     </>
   );
 }
