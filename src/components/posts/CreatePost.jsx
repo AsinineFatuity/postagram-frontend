@@ -5,7 +5,8 @@ import axiosService from "../../helpers/axios";
 import { getUser } from "../../hooks/user.actions";
 import { BASE_API_URL } from "../../hooks/user.actions";
 
-function CreatePost() {
+function CreatePost(props) {
+    const { refresh } = props;
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
@@ -36,6 +37,7 @@ function CreatePost() {
                 setToastType("success")
                 setForm({})
                 setShowToast(true)
+                refresh();
             }).catch((error)=>{
                 setToastTitle("Failed")
                 setToastMessage(`An error occured ${error}`)
