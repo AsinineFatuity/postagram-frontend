@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { format } from "timeago.js";
 import { LikeFilled, CommentOutlined, LikeOutlined, MoreOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { Image, Card, Dropdown, Button, Modal, Form } from "react-bootstrap";
+import { Image, Card, Dropdown } from "react-bootstrap";
 import { randomAvatar } from "../../utils";
 import Toaster from "../Toaster"
 import axiosService from "../../helpers/axios";
 import { getUser } from "../../hooks/user.actions";
+import UpdatePost from "./UpdatePost";
 
 
 const MoreToggleIcon = React.forwardRef(({onClick}, ref) => (
@@ -39,6 +40,7 @@ function Post(props) {
     axiosService
       .post(`/post/${post.id}/${action}/`)
       .then(() => {
+        setShowToast(true)
         refresh();
       })
       .catch((error) => console.error(error));
@@ -70,7 +72,8 @@ function Post(props) {
                 <Dropdown>
                   <Dropdown.Toggle as={MoreToggleIcon}></Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item>Update</Dropdown.Item>
+                    <UpdatePost post={post} refresh={refresh}/>
+                    {/* <Dropdown.Item>Update</Dropdown.Item> */}
                     <Dropdown.Item onClick={handleDelete}
                     className="text-danger"
                     >
