@@ -73,7 +73,6 @@ function Post(props) {
                   <Dropdown.Toggle as={MoreToggleIcon}></Dropdown.Toggle>
                   <Dropdown.Menu>
                     <UpdatePost post={post} refresh={refresh}/>
-                    {/* <Dropdown.Item>Update</Dropdown.Item> */}
                     <Dropdown.Item onClick={handleDelete}
                     className="text-danger"
                     >
