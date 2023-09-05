@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import { Button, Modal, Form } from "react-bootstrap";
-import Toaster from "../Toaster";
 import axiosService from "../../helpers/axios";
 import { getUser } from "../../hooks/user.actions";
 import { BASE_API_URL } from "../../hooks/user.actions";
+import { Context } from "../Layout";
 
 function CreatePost(props) {
     const { refresh } = props;
@@ -12,10 +12,7 @@ function CreatePost(props) {
     const handleShow = () => setShow(true)
     const [validated, setValidated] = useState(false);
     const [form, setForm] = useState({})
-    const [showToast, setShowToast] = useState(false)
-    const [toastTitle, setToastTitle] = useState("")
-    const [toastMessage, setToastMessage] = useState("")
-    const [toastType, setToastType] = useState("")
+    const {setToaster} = useContext(Context)
     const user = getUser()
 
     const handleSubmit = (event) => {
@@ -32,17 +29,22 @@ function CreatePost(props) {
         axiosService.post(`${BASE_API_URL}/post/`, data).then(
             ()=>{
                 handleClose()
-                setToastTitle("Success")
-                setToastMessage("Post created successfully")
-                setToastType("success")
+                setToaster({
+                    type: "success",
+                    message: "Post created 🚀",
+                    show: true,
+                    title: "Post Success"
+                })
                 setForm({})
-                setShowToast(true)
                 refresh();
             }).catch((error)=>{
-                setToastTitle("Failed")
-                setToastMessage(`An error occured ${error}`)
-                setToastType("danger")
-                console.log(error)
+                setToaster({
+                    type: "danger",
+                    message: "An error occured",
+                    show: true,
+                    title: "Post Error"
+                })
+                console.error(error)
             })
     }
 
@@ -80,13 +82,6 @@ function CreatePost(props) {
                 </Button>
             </Modal.Footer>
         </Modal>
-        <Toaster
-        title = {toastTitle.length ? toastTitle: "Post"}
-        message = {toastMessage}
-        showToast = {showToast}
-        type={toastType}
-        onClose = {()=> setShowToast(false)}
-        />
         </>
     )
 }
