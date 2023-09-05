@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { format } from "timeago.js";
 import { LikeFilled, CommentOutlined, LikeOutlined, MoreOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Image, Card, Dropdown } from "react-bootstrap";
 import { randomAvatar } from "../../utils";
-import Toaster from "../Toaster"
 import axiosService from "../../helpers/axios";
 import { getUser } from "../../hooks/user.actions";
 import UpdatePost from "./UpdatePost";
+import { Context } from "../Layout";
 
 
 const MoreToggleIcon = React.forwardRef(({onClick}, ref) => (
@@ -24,23 +24,34 @@ const MoreToggleIcon = React.forwardRef(({onClick}, ref) => (
 ))
 function Post(props) {
   const { post, refresh } = props;
-  const [showToast, setShowToast] = useState(false)
+  const {setToaster} = useContext(Context)
   const user = getUser()
 
   const handleDelete = () =>{
     axiosService.delete(`/post/${post.id}/`)
     .then(() => {
-      setShowToast(true)
-      refresh()
+      setToaster({
+        type: "warning",
+        message: "Post deleted 🚀",
+        show: true,
+        title: "Post Deleted",
+      });
+      refresh();
     })
-    .catch( (error) => console.error(error))
+    .catch( (error) => { 
+      setToaster({
+        type: "danger",
+        message: "An error occurred.",
+        show: true,
+        title: "Post Error",
+      });
+    console.error(error)})
   }
 
   const handleLikeClick = (action) => {
     axiosService
       .post(`/post/${post.id}/${action}/`)
       .then(() => {
-        setShowToast(true)
         refresh();
       })
       .catch((error) => console.error(error));
@@ -139,13 +150,6 @@ function Post(props) {
           </div>
         </Card.Footer>
       </Card>
-      <Toaster
-      title="Success!!"
-      message = "Post deleted 🚀"
-      type="danger"
-      showToast = {showToast}
-      onClose = { () => setShowToast(false)}
-      />
     </>
   );
 }
