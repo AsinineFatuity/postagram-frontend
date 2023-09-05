@@ -1,17 +1,17 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import { Button, Modal, Form, Dropdown } from "react-bootstrap";
 import axiosService from "../../helpers/axios";
-import Toaster from "../Toaster";
+import { Context } from "../Layout";
 
 function UpdatePost(props){
     const {post, refresh} = props;
     const [show, setShow] = useState(false);
     const [validated, setValidated] = useState(false);
-    const [showToast, setShowToast] = useState(false);
     const [form, setForm] = useState({
         author: post.author.id,
         body: post.body
     });
+    const {setToaster} = useContext(Context)
 
     const handleSubmit = (event) =>{
         event.preventDefault();
@@ -29,10 +29,21 @@ function UpdatePost(props){
         axiosService.put(`/post/${post.id}/`, data)
         .then(() => {
             handleClose();
-            setShowToast(true);
+            setToaster({
+                type: "success",
+                message: "Post updated 🚀",
+                show: true,
+                title: "Post Success"
+            })
             refresh()
         })
         .catch((error) => {
+            setToaster({
+                type: "danger",
+                message: "An error occured",
+                show: true,
+                title: "Post Error"
+            })
             console.error(error);
         })
 
@@ -65,13 +76,6 @@ function UpdatePost(props){
                 <Button variant="primary" onClick={handleSubmit}>Modify</Button>
             </Modal.Footer>
         </Modal>
-        <Toaster
-        title="Success!"
-        message="Post updated 🚀"
-        type="success"
-        showToast = {showToast}
-        onClose = {() => setShowToast(false)}
-        />
         </>
     )
 
