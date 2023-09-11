@@ -23,7 +23,7 @@ const MoreToggleIcon = React.forwardRef(({onClick}, ref) => (
   </Link>
 ))
 function Post(props) {
-  const { post, refresh } = props;
+  const { post, refresh, isSinglePost } = props;
   const {setToaster} = useContext(Context)
   const user = getUser()
 
@@ -113,6 +113,15 @@ function Post(props) {
               <small>{post.likes_count}</small>
             </p>
           </div>
+          {!isSinglePost && (
+          <p className="ms-1 fs-1">
+            <small>
+              <Link to={`/post/${post.id}/`}>
+              {post.comments_count} comments
+              </Link>
+            </small>
+          </p>
+          )}
         </Card.Body>
         <Card.Footer className="d-flex bg-white w-50 justify-content-between border-0">
           <div className="d-flex flex-row">
@@ -134,6 +143,7 @@ function Post(props) {
               <small>Like</small>
             </p>
           </div>
+          {!isSinglePost && (
           <div className="d-flex flex-row">
             <CommentOutlined
               style={{
@@ -148,6 +158,7 @@ function Post(props) {
               <small>Comment</small>
             </p>
           </div>
+          )}
         </Card.Footer>
       </Card>
     </>
