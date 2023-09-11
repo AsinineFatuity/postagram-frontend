@@ -27,7 +27,7 @@ function Layout(props){
                     marginLeft: "5%",
                     marginTop: "1%"
                 }}
-                onClick={navigate(-1)}
+                onClick={() => navigate(-1)}
                 />
             )}
             <div className="container m-5">{props.children}</div>
