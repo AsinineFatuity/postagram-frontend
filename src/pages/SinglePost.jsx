@@ -6,7 +6,7 @@ import useSWR from "swr"
 import { fetcher } from "../helpers/axios";
 import Post from "../components/posts/Post";
 import CreateComment from "../components/comments/CreateComment";
-
+import Comment from "../components/comments/Comment";
 function SinglePost(){
     let {postId} = useParams();
     const post = useSWR(`post/${postId}/`, fetcher);
@@ -19,7 +19,7 @@ function SinglePost(){
                     <Col sm={8}>
                         <Post post={post.data} refresh={post.mutate} isSinglePost/>
                         <CreateComment postId={post.data.id} refresh={comments.mutate} />
-                        {/* {comments.data && 
+                        {comments.data && 
                             comments.data.results.map((comment, index) => (
                                 <Comment 
                                     key={index}
@@ -29,7 +29,7 @@ function SinglePost(){
                                 />
                             )
                             )
-                        } */}
+                        }
                     
                     </Col>
                 </Row>
