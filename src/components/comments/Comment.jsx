@@ -5,6 +5,7 @@ import { randomAvatar } from "../../utils";
 import axiosService from "../../helpers/axios";
 import { getUser } from "../../hooks/user.actions";
 import { Context } from "../Layout";
+import UpdateComment from "./UpdateComment";
 
 function Comment(props){
     const {postId, comment, refresh} = props;
@@ -56,9 +57,11 @@ function Comment(props){
                             <Dropdown>
                                 <Dropdown.Toggle></Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    <Dropdown.Item>
-                                        Modify
-                                    </Dropdown.Item>
+                                    <UpdateComment
+                                    comment = {comment}
+                                    refresh = {refresh}
+                                    postId = {postId}
+                                    />
                                     <Dropdown.Item onClick={handleDelete} className="text-danger">
                                         Delete
                                     </Dropdown.Item>
