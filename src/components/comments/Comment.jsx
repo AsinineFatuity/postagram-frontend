@@ -12,7 +12,24 @@ function Comment(props){
     const user = getUser()
 
     const handleDelete = () => {
-
+        axiosService.delete(`post/${postId}/comment/${comment.id}/`)
+        .then(()=> {
+            setToaster({
+                type: "danger",
+                message: "Comment deleted 🚀",
+                show: true,
+                title: "Comment Deleted"
+            });
+            refresh();
+        })
+        .catch((err) =>{
+            setToaster({
+                type: "warning",
+                message: "An error occurred",
+                show: true,
+                title: "Comment Error"
+            });
+        })
     }
     return (
         <Card className="rounded-3 my-2">
